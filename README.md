@@ -25,4 +25,4 @@ UseTLS=YES
 
 # result
 
-[result]: im.jpg "result"
+[result]: ./im.jpg "result"
