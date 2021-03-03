@@ -22,3 +22,7 @@ UseTLS=YES
 0 */3 * * * cd /home/pi/internet-test && ./pingres.sh
 * * * * * cd /home/pi/internet-test && flock -w 5 /tmp/pinglock /home/pi/pingrun.sh
 ```
+
+# result
+
+[result]: im.jpg "result"
