@@ -5,10 +5,15 @@ pings google, creates a big log, parses log and sends an email or look on flask 
 # contents
 
 pingrun.sh - starts a ping command to ping 8.8.8.8 and pipe results with a timestamp to a file (see crontabs)
+
 pingtest.py - parses the results file (pingtest.txt) into a html table
+
 pingres.sh - run the python results send email (see crontabs)
+
 pinglogrot.conf - if you want to rotate/comrpress your logs (see crontabs)
+
 pingflask.py - a simple flask app to host the a results page (see also server)
+
 
 # email setup for googlemail
 
