@@ -1,5 +1,5 @@
 from flask import Flask
-from pingtest import page
+from pingtest2 import page
 
 app = Flask(__name__)
 

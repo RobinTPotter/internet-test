@@ -1,13 +1,15 @@
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
 
 def page():
     
-    with open("pingtest.txt","r") as f:
+    with open("pingtest2.txt","r") as f:
         data = f.readlines()
     
     data = [d.split() for d in data]
     
-    data0 = [[int(d[0]),d[5]] for d in data]
+    data0 = [[int(d[0]),len(d)==2] for d in data]
+    #print(data0)
     
     data = []
     drops = []
@@ -15,11 +17,10 @@ def page():
     
     
     for d in data0:
-        if d[1]=='is': data.append([d[0],'no wifi'])
-        elif d[1]=='Net': data.append([d[0],'no internet'])
+        if d[1]==False: data.append([d[0],'none'])
         else: data.append([d[0],'ok'])
     
-    # print(data[:10])
+    #print(data[:10])
     
     status = None
     start_drop = 0
@@ -27,11 +28,11 @@ def page():
     for d in data:
         if status is None: status = d[1]
         if d[1] != status:
-            if status == 'ok' and d[1] == 'no internet':
+            if status == 'ok' and d[1] == 'none':
                 start_drop = d[0]
-            if status == 'no internet' and d[1] == 'ok':
+            if status == 'none' and d[1] == 'ok':
                 drops.append([start_drop, d[0]-start_drop])
-                start_drop_day = datetime.utcfromtimestamp(start_drop).strftime('%d/%m/%Y')
+                start_drop_day = datetime.utcfromtimestamp(start_drop).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%d/%m/%Y')
                 if not start_drop_day in drop_days: drop_days.append(start_drop_day)
     
             status = d[1]
@@ -59,7 +60,13 @@ table, th, td {{ border: 1px solid black }}
 """.format(now.strftime("%d/%m/%Y %H:%M:%S"),''.join(["<input type=\"checkbox\" name=\"b\" value=\"{}\" onclick=\"filter(event)\">{}</input>".format(d,d) for d in drop_days]))
     
     for d in drops:
-        output += '<tr name="{}" style="display:none"><td>{}</td><td>{}</td><td class="c">{}</td><td class="c">{}</td></tr>\n'.format(datetime.utcfromtimestamp(d[0]).strftime('%d/%m/%Y'),datetime.utcfromtimestamp(d[0]).strftime('%d/%m/%Y'), datetime.utcfromtimestamp(d[0]).strftime('%H:%M:%S'), int(d[1]/60), d[1]-(60*int(d[1]/60)))
+        output += '<tr name="{}" style="display:none"><td>{}</td><td>{}</td><td class="c">{}</td><td class="c">{}</td></tr>\n'.format(
+            datetime.utcfromtimestamp(d[0]).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%d/%m/%Y'),
+            datetime.utcfromtimestamp(d[0]).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%d/%m/%Y'), 
+            datetime.utcfromtimestamp(d[0]).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%H:%M:%S'), 
+            int(d[1]/60), 
+            d[1]-(60*int(d[1]/60))
+        )
     
     output += """</table>
 <script>
