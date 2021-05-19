@@ -31,7 +31,8 @@ def page():
             if status == 'ok' and d[1] == 'none':
                 start_drop = d[0]
             if status == 'none' and d[1] == 'ok':
-                drops.append([start_drop, d[0]-start_drop])
+                length= d[0]-start_drop
+                if length>5: drops.append([start_drop, length])
                 start_drop_day = datetime.utcfromtimestamp(start_drop).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%d/%m/%Y')
                 if not start_drop_day in drop_days: drop_days.append(start_drop_day)
     
@@ -57,7 +58,7 @@ table, th, td {{ border: 1px solid black }}
 <thead>
 <th>day</th><th>time</th><th>minutes</th><th>seconds</th>
 </thead>
-""".format(now.strftime("%d/%m/%Y %H:%M:%S"),''.join(["<input type=\"checkbox\" name=\"b\" value=\"{}\" onclick=\"filter(event)\">{}</input>".format(d,d) for d in drop_days]))
+""".format(now.strftime("%d/%m/%Y %H:%M:%S"),''.join(["<input type=\"checkbox\" name=\"b\" value=\"{}\" onclick=\"filter(event)\" {}>{}</input>".format(d,"checked" if d==drop_days[-1] else "",d) for d in drop_days]))
     
     for d in drops:
         output += '<tr name="{}" style="display:none"><td>{}</td><td>{}</td><td class="c">{}</td><td class="c">{}</td></tr>\n'.format(
