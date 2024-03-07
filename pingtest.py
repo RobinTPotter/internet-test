@@ -7,6 +7,7 @@ def page():
         data = f.readlines()
     
     data = [d.split() for d in data]
+    print(data[:2])
     
     data0 = [[int(d[0]),len(d)==2] for d in data]
     #print(data0)
@@ -58,10 +59,10 @@ table, th, td {{ border: 1px solid black }}
 <thead>
 <th>day</th><th>time</th><th>minutes</th><th>seconds</th>
 </thead>
-""".format(now.strftime("%d/%m/%Y %H:%M:%S"),''.join(["<input type=\"checkbox\" name=\"b\" value=\"{}\" onclick=\"filter(event)\" {}>{}</input>".format(d,"checked" if d==drop_days[-1] else "",d) for d in drop_days]))
+""".format(now.strftime("%d/%m/%Y %H:%M:%S"),''.join(["<input type=\"checkbox\" name=\"b\" value=\"{}\" onclick=\"filter(event)\" {}>{}</input>".format(d,"checked",d) for d in drop_days]))
     
     for d in drops:
-        output += '<tr name="{}" style="display:none"><td>{}</td><td>{}</td><td class="c">{}</td><td class="c">{}</td></tr>\n'.format(
+        output += '<tr name="{}" style="display:display"><td>{}</td><td>{}</td><td class="c">{}</td><td class="c">{}</td></tr>\n'.format(
             datetime.utcfromtimestamp(d[0]).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%d/%m/%Y'),
             datetime.utcfromtimestamp(d[0]).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%d/%m/%Y'), 
             datetime.utcfromtimestamp(d[0]).replace(tzinfo=timezone.utc).astimezone(pytz.timezone('Europe/London')).strftime('%H:%M:%S'), 
@@ -84,6 +85,7 @@ these.forEach(function(v) {
 v.style.removeProperty("display")
 })}
 }
+
 </script>
 </body>
 </html>

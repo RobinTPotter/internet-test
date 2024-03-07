@@ -40,6 +40,10 @@ install gunicorn for python3 (```sudo apt-get install gunicorn3```)
 
 ```gunicorn3 --bind=0.0.0.0 pingflask:app```
 
+or plain flask:
+
+```flask --app pingflask.py run --host=0.0.0.0 --port=8000```
+
 
 # result
 
